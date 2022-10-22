@@ -1,5 +1,5 @@
 import { Header, Categories, Sort, PizzaBlock } from 'components';
-import pizzas from 'assets/pizza.json';
+import pizzas from 'assets/pizzas.json';
 import './scss/app.scss';
 
 export const App = () => {
@@ -17,7 +17,7 @@ export const App = () => {
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {pizzas.map(pizza => (
-              <PizzaBlock {...pizza} />
+              <PizzaBlock key={pizza.id} {...pizza} />
             ))}
           </div>
         </div>

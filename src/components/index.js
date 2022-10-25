@@ -4,6 +4,7 @@ import { Sort } from "./Sort";
 import { PizzaBlock } from "./PizzaBlock/PizzaBlock";
 import { NotFoundBlock } from "./NotFoundBlock/NotFoundBlock";
 import { PizzaBlockSkeleton } from "./PizzaBlock/PizzaBlockSkeleton";
+import { Search } from "./Search/Search";
 
 export {
   Header,
@@ -12,4 +13,5 @@ export {
   PizzaBlock,
   PizzaBlockSkeleton,
   NotFoundBlock,
+  Search,
 };

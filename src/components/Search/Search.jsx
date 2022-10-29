@@ -1,6 +1,35 @@
+import { useContext, useState, useMemo, useRef } from "react";
+import debounce from "lodash.debounce";
+
+import { SearchContext } from "App";
 import styles from "./Search.module.scss";
 
-export const Search = ({ searchInput, onChangeSeacrhInput }) => {
+export const Search = () => {
+  const inputRef = useRef();
+
+  const [searchLocal, setSearchLocal] = useState("");
+
+  const { setSearchValue } = useContext(SearchContext);
+
+  const updateSearchValue = useMemo(
+    () =>
+      debounce((value) => {
+        setSearchValue(value);
+      }, 500),
+    [setSearchValue]
+  );
+
+  const handleChangeSearchLocal = (event) => {
+    setSearchLocal(event.target.value);
+    updateSearchValue(event.target.value);
+  };
+
+  const handleClearInput = () => {
+    setSearchLocal("");
+    setSearchValue("");
+    inputRef.current.focus();
+  };
+
   return (
     <div className={styles.root}>
       <svg
@@ -16,15 +45,16 @@ export const Search = ({ searchInput, onChangeSeacrhInput }) => {
       </svg>
 
       <input
-        value={searchInput}
-        onChange={(event) => onChangeSeacrhInput(event.target.value)}
+        ref={inputRef}
+        value={searchLocal}
+        onChange={handleChangeSearchLocal}
         className={styles.input}
         placeholder="Введите название пиццы..."
       />
 
-      {searchInput && (
+      {searchLocal && (
         <svg
-          onClick={() => onChangeSeacrhInput("")}
+          onClick={handleClearInput}
           className={styles.clearIcon}
           version="1.1"
           viewBox="0 0 24 24"

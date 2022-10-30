@@ -1,8 +1,14 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import qs from "qs";
 
-import { setCategoryIdx, setSortType } from "redux/slices/filterSlice";
+import {
+  setCategoryIdx,
+  setSortType,
+  setFilters,
+} from "redux/slices/filterSlice";
 import {
   Categories,
   Sort,
@@ -10,15 +16,19 @@ import {
   PizzaBlockSkeleton,
 } from "../components";
 import { SearchContext } from "App";
+import { sortList } from "components/Sort";
 
 const Home = () => {
   const { categoryIdx, sortType } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { searchValue } = useContext(SearchContext);
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
 
   const handleChangeCategoryIdx = (idx) => {
     dispatch(setCategoryIdx(idx));
@@ -29,30 +39,60 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const search = searchValue ? `&search=${searchValue}` : "";
-    const category = categoryIdx > 0 ? `category=${categoryIdx}` : "";
-    const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sort = sortList.find(
+        (obj) => obj.sortProperty === params.sortProperty
+      );
 
-    const sortBy = `sortBy=${sortType.sortProperty.replace(
-      "-",
-      ""
-    )}&order=${order}`;
+      dispatch(setFilters({ ...params, sortType: sort }));
 
-    const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
+      isSearch.current = true;
+    }
+  }, [dispatch]);
 
-    setIsLoading(true);
+  useEffect(() => {
+    if (!isSearch.current) {
+      const search = searchValue ? `&search=${searchValue}` : "";
+      const category = categoryIdx > 0 ? `category=${categoryIdx}` : "";
+      const order = sortType.sortProperty.includes("-") ? "asc" : "desc";
 
-    axios
-      .get(
-        `https://6354da35da523ceadcf4f9d8.mockapi.io/items?${category}${sort}${search}`
-      )
-      .then((res) => {
-        setItems(res.data);
-        setIsLoading(false);
-      });
+      const sortBy = `sortBy=${sortType.sortProperty.replace(
+        "-",
+        ""
+      )}&order=${order}`;
+
+      const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
+
+      setIsLoading(true);
+
+      axios
+        .get(
+          `https://6354da35da523ceadcf4f9d8.mockapi.io/items?${category}${sort}${search}`
+        )
+        .then((res) => {
+          setItems(res.data);
+          setIsLoading(false);
+        });
+    }
 
     window.scrollTo(0, 0);
+
+    isSearch.current = false;
   }, [categoryIdx, searchValue, sortType]);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        categoryIdx,
+        sortProperty: sortType.sortProperty,
+      });
+
+      navigate(`?${queryString}`);
+    }
+
+    isMounted.current = true;
+  }, [categoryIdx, navigate, sortType]);
 
   return (
     <div className="container">

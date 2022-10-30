@@ -1,17 +1,17 @@
-export const Categories = ({ value, onChangeCategory }) => {
-  const categories = [
-    "Все",
-    "Мясные",
-    "Вегетарианская",
-    "Гриль",
-    "Острые",
-    "Закрытые",
-  ];
+const categoriesList = [
+  "Все",
+  "Мясные",
+  "Вегетарианская",
+  "Гриль",
+  "Острые",
+  "Закрытые",
+];
 
+export const Categories = ({ value, onChangeCategory }) => {
   return (
     <div className="categories">
       <ul>
-        {categories.map((category, idx) => (
+        {categoriesList.map((category, idx) => (
           <li
             key={category}
             onClick={() => onChangeCategory(idx)}

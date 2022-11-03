@@ -4,11 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import qs from "qs";
 
-import {
-  setCategoryIdx,
-  setSortType,
-  setFilters,
-} from "redux/slices/filterSlice";
+import { setFilters } from "redux/slices/filterSlice";
 import {
   Categories,
   Sort,
@@ -27,16 +23,9 @@ const Home = () => {
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const isSearch = useRef(false);
   const isMounted = useRef(false);
-
-  const handleChangeCategoryIdx = (idx) => {
-    dispatch(setCategoryIdx(idx));
-  };
-
-  const handleChangeSortType = (obj) => {
-    dispatch(setSortType(obj));
-  };
 
   useEffect(() => {
     if (window.location.search) {
@@ -97,11 +86,8 @@ const Home = () => {
   return (
     <div className="container">
       <div className="content__top">
-        <Categories
-          value={categoryIdx}
-          onChangeCategory={handleChangeCategoryIdx}
-        />
-        <Sort value={sortType} onChangeSortType={handleChangeSortType} />
+        <Categories />
+        <Sort />
       </div>
 
       <h1 className="content__title">Все пиццы</h1>

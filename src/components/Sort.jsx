@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setSortType } from "redux/slices/filterSlice";
 
 export const sortList = [
   { name: "популярности DESC", sortProperty: "rating" },
@@ -9,21 +12,41 @@ export const sortList = [
   { name: "алфавиту ASC", sortProperty: "-title" },
 ];
 
-export const Sort = ({ value, onChangeSortType }) => {
-  const [isShown, setIsShown] = useState(false);
+export const Sort = () => {
+  const dispatch = useDispatch();
+  const { sortType } = useSelector((state) => state.filter);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const sortRef = useRef();
 
   const handleChangeActiveSort = (typeObj) => {
-    onChangeSortType(typeObj);
-    setIsShown(false);
+    dispatch(setSortType(typeObj));
+    setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      const handleSortClose = (event) => {
+        const sort = event.path.includes(sortRef.current);
+
+        if (!sort) {
+          setIsOpen(false);
+        }
+      };
+
+      document.body.addEventListener("click", handleSortClose);
+
+      return () => document.body.removeEventListener("click", handleSortClose);
+    }
+  }, [isOpen]);
 
   return (
     <>
-      {isShown && (
-        <div className="sort__backdrop" onClick={() => setIsShown(false)}></div>
-      )}
+      {/* {isOpen && (
+        <div className="sort__backdrop" onClick={() => setIsOpen(false)}></div>
+      )} */}
 
-      <div className="sort">
+      <div ref={sortRef} className="sort">
         <div className="sort__label">
           <svg
             width="10"
@@ -38,10 +61,10 @@ export const Sort = ({ value, onChangeSortType }) => {
             />
           </svg>
           <b>Сортировка по:</b>
-          <span onClick={() => setIsShown(!isShown)}>{value.name}</span>
+          <span onClick={() => setIsOpen(!isOpen)}>{sortType.name}</span>
         </div>
 
-        {isShown && (
+        {isOpen && (
           <div className="sort__popup">
             <ul>
               {sortList.map((typeObj, idx) => (
@@ -49,7 +72,9 @@ export const Sort = ({ value, onChangeSortType }) => {
                   onClick={() => handleChangeActiveSort(typeObj)}
                   key={idx}
                   className={
-                    value.sortProperty === typeObj.sortProperty ? "active" : ""
+                    sortType.sortProperty === typeObj.sortProperty
+                      ? "active"
+                      : ""
                   }
                 >
                   {typeObj.name}

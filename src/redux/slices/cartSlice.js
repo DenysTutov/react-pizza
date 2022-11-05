@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [],
@@ -6,12 +6,12 @@ const initialState = {
   totalCount: 0,
 };
 
-export const cartSlice = createSlice({
-  name: "cart",
+const cartSlice = createSlice({
+  name: 'cart',
   initialState,
   reducers: {
     addItem: (state, { payload }) => {
-      const findItem = state.items.find((item) => item.id === payload.id);
+      const findItem = state.items.find(item => item.id === payload.id);
 
       if (!findItem) {
         state.items.push({ ...payload, count: 1 });
@@ -28,7 +28,7 @@ export const cartSlice = createSlice({
       }, 0);
     },
     decrementItem: (state, { payload }) => {
-      const findItem = state.items.find((item) => item.id === payload);
+      const findItem = state.items.find(item => item.id === payload);
 
       if (findItem) {
         findItem.count -= 1;
@@ -43,9 +43,9 @@ export const cartSlice = createSlice({
       }, 0);
     },
     removeItem: (state, { payload }) => {
-      state.items = state.items.filter((obj) => obj.id !== payload);
+      state.items = state.items.filter(obj => obj.id !== payload);
     },
-    clearItems: (state) => {
+    clearItems: state => {
       state.items = [];
       state.totalCount = 0;
       state.totalPrice = 0;

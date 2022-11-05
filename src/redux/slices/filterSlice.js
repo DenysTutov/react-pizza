@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   categoryIdx: 0,
   sortType: {
-    name: "популярности",
-    sortProperty: "rating",
+    name: 'популярности',
+    sortProperty: 'rating',
   },
 };
 
-export const filterSlice = createSlice({
-  name: "filter",
+const filterSlice = createSlice({
+  name: 'filter',
   initialState,
   reducers: {
     setCategoryIdx: (state, { payload }) => {

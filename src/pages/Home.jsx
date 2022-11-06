@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import qs from 'qs';
 
+import { fetchPizzas } from 'redux/slices/pizzaSlice';
 import { setFilters } from 'redux/slices/filterSlice';
 import {
   Categories,
@@ -16,16 +16,28 @@ import { sortList } from 'components/Sort';
 
 const Home = () => {
   const { categoryIdx, sortType } = useSelector(state => state.filter);
+  const { items, status } = useSelector(state => state.pizza);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { searchValue } = useContext(SearchContext);
 
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const isSearch = useRef(false);
   const isMounted = useRef(false);
+
+  const getPizzas = () => {
+    const search = searchValue ? `&search=${searchValue}` : '';
+    const category = categoryIdx > 0 ? `category=${categoryIdx}` : '';
+    const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+    const sortBy = `sortBy=${sortType.sortProperty.replace(
+      '-',
+      ''
+    )}&order=${order}`;
+    const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
+
+    dispatch(fetchPizzas({ category, sort, search }));
+  };
 
   useEffect(() => {
     if (window.location.search) {
@@ -42,27 +54,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!isSearch.current) {
-      const search = searchValue ? `&search=${searchValue}` : '';
-      const category = categoryIdx > 0 ? `category=${categoryIdx}` : '';
-      const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
-
-      const sortBy = `sortBy=${sortType.sortProperty.replace(
-        '-',
-        ''
-      )}&order=${order}`;
-
-      const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
-
-      setIsLoading(true);
-
-      axios
-        .get(
-          `https://6354da35da523ceadcf4f9d8.mockapi.io/items?${category}${sort}${search}`
-        )
-        .then(res => {
-          setItems(res.data);
-          setIsLoading(false);
-        });
+      getPizzas();
     }
 
     window.scrollTo(0, 0);
@@ -93,7 +85,9 @@ const Home = () => {
       <h1 className="content__title">Все пиццы</h1>
 
       <div className="content__items">
-        {isLoading
+        {status === 'error' && <div>Упс, произошла ошибка</div>}
+
+        {status === 'pending'
           ? [...new Array(8)].map((_, idx) => <PizzaBlockSkeleton key={idx} />)
           : items.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
       </div>

@@ -1,27 +1,27 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
-import { fetchPizzas } from 'redux/slices/pizzaSlice';
-import { setFilters } from 'redux/slices/filterSlice';
+import { fetchPizzas, selectorPizza } from 'redux/slices/pizzaSlice';
+import { selectorFilter, setFilters } from 'redux/slices/filterSlice';
 import {
   Categories,
   Sort,
   PizzaBlock,
   PizzaBlockSkeleton,
 } from '../components';
-import { SearchContext } from 'App';
+
 import { sortList } from 'components/Sort';
 
 const Home = () => {
-  const { categoryIdx, sortType } = useSelector(state => state.filter);
-  const { items, status } = useSelector(state => state.pizza);
+  const { categoryIdx, sortType } = useSelector(selectorFilter);
+  const { items, status } = useSelector(selectorPizza);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { searchValue } = useContext(SearchContext);
+  const { searchValue } = useSelector(selectorFilter);
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
@@ -60,6 +60,7 @@ const Home = () => {
     window.scrollTo(0, 0);
 
     isSearch.current = false;
+    // eslint-disable-next-line
   }, [categoryIdx, searchValue, sortType]);
 
   useEffect(() => {

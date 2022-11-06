@@ -1,32 +1,32 @@
-import { useContext, useState, useMemo, useRef } from "react";
-import debounce from "lodash.debounce";
+import { useState, useMemo, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import debounce from 'lodash.debounce';
 
-import { SearchContext } from "App";
-import styles from "./Search.module.scss";
+import styles from './Search.module.scss';
+import { setSearchValue } from 'redux/slices/filterSlice';
 
 export const Search = () => {
+  const dispatch = useDispatch();
+
+  const [searchLocal, setSearchLocal] = useState('');
   const inputRef = useRef();
-
-  const [searchLocal, setSearchLocal] = useState("");
-
-  const { setSearchValue } = useContext(SearchContext);
 
   const updateSearchValue = useMemo(
     () =>
-      debounce((value) => {
-        setSearchValue(value);
+      debounce(value => {
+        dispatch(setSearchValue(value));
       }, 500),
-    [setSearchValue]
+    [dispatch]
   );
 
-  const handleChangeSearchLocal = (event) => {
+  const handleChangeSearchLocal = event => {
     setSearchLocal(event.target.value);
     updateSearchValue(event.target.value);
   };
 
   const handleClearInput = () => {
-    setSearchLocal("");
-    setSearchValue("");
+    setSearchLocal('');
+    dispatch(setSearchValue(''));
     inputRef.current.focus();
   };
 

@@ -1,15 +1,17 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { addItem } from "redux/slices/cartSlice";
+import { addItem } from 'redux/slices/cartSlice';
 
-const typesName = ["тонкое", "традиционное"];
+const typesName = ['тонкое', 'традиционное'];
 
 export const PizzaBlock = ({ id, title, price, imageUrl, types, sizes }) => {
   const dispatch = useDispatch();
-  const pizza = useSelector(state => state.cart.items.find(obj => obj.id === id));
+  const pizza = useSelector(state =>
+    state.cart.items.find(obj => obj.id === id)
+  );
   const addedPizzaCount = pizza ? pizza.count : 0;
-  
 
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
@@ -30,16 +32,18 @@ export const PizzaBlock = ({ id, title, price, imageUrl, types, sizes }) => {
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <img className="pizza-block__image" src={imageUrl} alt={title} />
+        <Link to={`/pizza/${id}`}>
+          <img className="pizza-block__image" src={imageUrl} alt={title} />
+        </Link>
 
         <h4 className="pizza-block__title">{title}</h4>
         <div className="pizza-block__selector">
           <ul>
-            {types.map((typeIdx) => (
+            {types.map(typeIdx => (
               <li
                 key={typeIdx}
                 onClick={() => setActiveType(typeIdx)}
-                className={activeType === typeIdx ? "active" : ""}
+                className={activeType === typeIdx ? 'active' : ''}
               >
                 {typesName[typeIdx]}
               </li>
@@ -51,7 +55,7 @@ export const PizzaBlock = ({ id, title, price, imageUrl, types, sizes }) => {
               <li
                 key={size}
                 onClick={() => setActiveSize(idx)}
-                className={activeSize === idx ? "active" : ""}
+                className={activeSize === idx ? 'active' : ''}
               >
                 {size} см.
               </li>

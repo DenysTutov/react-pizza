@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
 import { fetchPizzas, selectorPizza } from 'redux/slices/pizzaSlice';
@@ -11,16 +11,14 @@ import {
   PizzaBlock,
   PizzaBlockSkeleton,
 } from '../components';
-
 import { sortList } from 'components/Sort';
 
 const Home = () => {
-  const { categoryIdx, sortType } = useSelector(selectorFilter);
-  const { items, status } = useSelector(selectorPizza);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { categoryIdx, sortType } = useSelector(selectorFilter);
+  const { items, status } = useSelector(selectorPizza);
   const { searchValue } = useSelector(selectorFilter);
 
   const isSearch = useRef(false);
@@ -77,22 +75,28 @@ const Home = () => {
   }, [categoryIdx, navigate, sortType]);
 
   return (
-    <div className="container">
-      <div className="content__top">
-        <Categories />
-        <Sort />
+    <>
+      <div className="container">
+        <div className="content__top">
+          <Categories />
+          <Sort />
+        </div>
+
+        <h1 className="content__title">Все пиццы</h1>
+
+        <div className="content__items">
+          {status === 'error' && <div>Упс, произошла ошибка</div>}
+
+          {status === 'pending'
+            ? [...new Array(8)].map((_, idx) => (
+                <PizzaBlockSkeleton key={idx} />
+              ))
+            : items.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
+        </div>
       </div>
 
-      <h1 className="content__title">Все пиццы</h1>
-
-      <div className="content__items">
-        {status === 'error' && <div>Упс, произошла ошибка</div>}
-
-        {status === 'pending'
-          ? [...new Array(8)].map((_, idx) => <PizzaBlockSkeleton key={idx} />)
-          : items.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
-      </div>
-    </div>
+      <Outlet />
+    </>
   );
 };
 

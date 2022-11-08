@@ -1,32 +1,33 @@
-import { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { setSortType } from "redux/slices/filterSlice";
+import { setSortType } from 'redux/slices/filterSlice';
+import { selectorFilter } from 'redux/slices/filterSlice';
 
 export const sortList = [
-  { name: "популярности DESC", sortProperty: "rating" },
-  { name: "популярности ASC", sortProperty: "-rating" },
-  { name: "цене DESC", sortProperty: "price" },
-  { name: "цене ASC", sortProperty: "-price" },
-  { name: "алфавиту DESC", sortProperty: "title" },
-  { name: "алфавиту ASC", sortProperty: "-title" },
+  { name: 'популярности DESC', sortProperty: 'rating' },
+  { name: 'популярности ASC', sortProperty: '-rating' },
+  { name: 'цене DESC', sortProperty: 'price' },
+  { name: 'цене ASC', sortProperty: '-price' },
+  { name: 'алфавиту DESC', sortProperty: 'title' },
+  { name: 'алфавиту ASC', sortProperty: '-title' },
 ];
 
 export const Sort = () => {
   const dispatch = useDispatch();
-  const { sortType } = useSelector((state) => state.filter);
+  const { sortType } = useSelector(selectorFilter);
 
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef();
 
-  const handleChangeActiveSort = (typeObj) => {
+  const handleChangeActiveSort = typeObj => {
     dispatch(setSortType(typeObj));
     setIsOpen(false);
   };
 
   useEffect(() => {
     if (isOpen) {
-      const handleSortClose = (event) => {
+      const handleSortClose = event => {
         const sort = event.path.includes(sortRef.current);
 
         if (!sort) {
@@ -34,9 +35,9 @@ export const Sort = () => {
         }
       };
 
-      document.body.addEventListener("click", handleSortClose);
+      document.body.addEventListener('click', handleSortClose);
 
-      return () => document.body.removeEventListener("click", handleSortClose);
+      return () => document.body.removeEventListener('click', handleSortClose);
     }
   }, [isOpen]);
 
@@ -73,8 +74,8 @@ export const Sort = () => {
                   key={idx}
                   className={
                     sortType.sortProperty === typeObj.sortProperty
-                      ? "active"
-                      : ""
+                      ? 'active'
+                      : ''
                   }
                 >
                   {typeObj.name}

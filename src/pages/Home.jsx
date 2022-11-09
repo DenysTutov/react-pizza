@@ -15,7 +15,7 @@ import { sortList } from 'components/Sort';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const navigate = useRef(useNavigate());
+  const navigateRef = useRef(useNavigate());
 
   const { categoryIdx, sortType } = useSelector(selectorFilter);
   const { items, status, isModalOpen } = useSelector(selectorPizza);
@@ -66,7 +66,7 @@ const Home = () => {
         categoryIdx,
         sortProperty: sortType.sortProperty,
       });
-      navigate.current(`?${queryString}`);
+      navigateRef.current(`?${queryString}`);
     }
 
     isMounted.current = true;

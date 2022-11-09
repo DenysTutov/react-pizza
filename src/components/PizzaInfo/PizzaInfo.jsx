@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 import { Modal } from 'components/Modal/Modal';
+import { setIsModalOpen } from 'redux/slices/pizzaSlice';
 import styles from './PizzaInfo.module.scss';
 
 const PizzaInfo = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [pizza, setPizza] = useState(null);
 
@@ -19,6 +22,7 @@ const PizzaInfo = () => {
         );
 
         setPizza(data);
+        dispatch(setIsModalOpen(true));
       } catch (error) {
         alert('Ошибка при получении пиц');
         navigate('/');
@@ -26,7 +30,7 @@ const PizzaInfo = () => {
     };
 
     fetchPizza();
-  }, []);
+  }, [dispatch, id, navigate]);
 
   if (!pizza) {
     return <div>Loading...</div>;

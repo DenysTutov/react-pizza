@@ -1,14 +1,18 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
+import { setIsModalOpen } from 'redux/slices/pizzaSlice';
 import styles from './Modal.module.scss';
 
 export const Modal = ({ children }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleKeyDown = event => {
       if (event.code === 'Escape') {
+        dispatch(setIsModalOpen(false));
         navigate('/');
       }
     };
@@ -18,10 +22,11 @@ export const Modal = ({ children }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [navigate]);
+  }, [dispatch, navigate]);
 
   const handleBackdropClick = event => {
     if (event.target === event.currentTarget) {
+      dispatch(setIsModalOpen(false));
       navigate('/');
     }
   };

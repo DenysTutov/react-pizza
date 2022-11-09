@@ -18,24 +18,11 @@ const Home = () => {
   const navigate = useNavigate();
 
   const { categoryIdx, sortType } = useSelector(selectorFilter);
-  const { items, status } = useSelector(selectorPizza);
+  const { items, status, isModalOpen } = useSelector(selectorPizza);
   const { searchValue } = useSelector(selectorFilter);
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
-
-  const getPizzas = () => {
-    const search = searchValue ? `&search=${searchValue}` : '';
-    const category = categoryIdx > 0 ? `category=${categoryIdx}` : '';
-    const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
-    const sortBy = `sortBy=${sortType.sortProperty.replace(
-      '-',
-      ''
-    )}&order=${order}`;
-    const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
-
-    dispatch(fetchPizzas({ category, sort, search }));
-  };
 
   useEffect(() => {
     if (window.location.search) {
@@ -51,6 +38,19 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    const getPizzas = () => {
+      const search = searchValue ? `&search=${searchValue}` : '';
+      const category = categoryIdx > 0 ? `category=${categoryIdx}` : '';
+      const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+      const sortBy = `sortBy=${sortType.sortProperty.replace(
+        '-',
+        ''
+      )}&order=${order}`;
+      const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
+
+      dispatch(fetchPizzas({ category, sort, search }));
+    };
+
     if (!isSearch.current) {
       getPizzas();
     }
@@ -58,21 +58,19 @@ const Home = () => {
     window.scrollTo(0, 0);
 
     isSearch.current = false;
-    // eslint-disable-next-line
-  }, [categoryIdx, searchValue, sortType]);
+  }, [categoryIdx, dispatch, searchValue, sortType]);
 
   useEffect(() => {
-    if (isMounted.current) {
+    if (isMounted.current && !isModalOpen) {
       const queryString = qs.stringify({
         categoryIdx,
         sortProperty: sortType.sortProperty,
       });
-
       navigate(`?${queryString}`);
     }
 
     isMounted.current = true;
-  }, [categoryIdx, navigate, sortType]);
+  }, [categoryIdx, isModalOpen, sortType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

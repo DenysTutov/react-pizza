@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import qs from 'qs';
 
 import { fetchPizzas, selectorPizza } from 'redux/slices/pizzaSlice';
@@ -11,33 +11,18 @@ import {
   PizzaBlock,
   PizzaBlockSkeleton,
 } from '../components';
-
 import { sortList } from 'components/Sort';
 
 const Home = () => {
-  const { categoryIdx, sortType } = useSelector(selectorFilter);
-  const { items, status } = useSelector(selectorPizza);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { categoryIdx, sortType } = useSelector(selectorFilter);
+  const { items, status, isModalOpen } = useSelector(selectorPizza);
   const { searchValue } = useSelector(selectorFilter);
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
-
-  const getPizzas = () => {
-    const search = searchValue ? `&search=${searchValue}` : '';
-    const category = categoryIdx > 0 ? `category=${categoryIdx}` : '';
-    const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
-    const sortBy = `sortBy=${sortType.sortProperty.replace(
-      '-',
-      ''
-    )}&order=${order}`;
-    const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
-
-    dispatch(fetchPizzas({ category, sort, search }));
-  };
 
   useEffect(() => {
     if (window.location.search) {
@@ -53,6 +38,19 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    const getPizzas = () => {
+      const search = searchValue ? `&search=${searchValue}` : '';
+      const category = categoryIdx > 0 ? `category=${categoryIdx}` : '';
+      const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
+      const sortBy = `sortBy=${sortType.sortProperty.replace(
+        '-',
+        ''
+      )}&order=${order}`;
+      const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
+
+      dispatch(fetchPizzas({ category, sort, search }));
+    };
+
     if (!isSearch.current) {
       getPizzas();
     }
@@ -60,39 +58,43 @@ const Home = () => {
     window.scrollTo(0, 0);
 
     isSearch.current = false;
-    // eslint-disable-next-line
-  }, [categoryIdx, searchValue, sortType]);
+  }, [categoryIdx, dispatch, searchValue, sortType]);
 
   useEffect(() => {
-    if (isMounted.current) {
+    if (isMounted.current && !isModalOpen) {
       const queryString = qs.stringify({
         categoryIdx,
         sortProperty: sortType.sortProperty,
       });
-
       navigate(`?${queryString}`);
     }
 
     isMounted.current = true;
-  }, [categoryIdx, navigate, sortType]);
+  }, [categoryIdx, isModalOpen, sortType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="container">
-      <div className="content__top">
-        <Categories />
-        <Sort />
+    <>
+      <div className="container">
+        <div className="content__top">
+          <Categories />
+          <Sort />
+        </div>
+
+        <h1 className="content__title">Все пиццы</h1>
+
+        <div className="content__items">
+          {status === 'error' && <div>Упс, произошла ошибка</div>}
+
+          {status === 'pending'
+            ? [...new Array(8)].map((_, idx) => (
+                <PizzaBlockSkeleton key={idx} />
+              ))
+            : items.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
+        </div>
       </div>
 
-      <h1 className="content__title">Все пиццы</h1>
-
-      <div className="content__items">
-        {status === 'error' && <div>Упс, произошла ошибка</div>}
-
-        {status === 'pending'
-          ? [...new Array(8)].map((_, idx) => <PizzaBlockSkeleton key={idx} />)
-          : items.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
-      </div>
-    </div>
+      <Outlet />
+    </>
   );
 };
 

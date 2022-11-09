@@ -16,6 +16,7 @@ export const fetchPizzas = createAsyncThunk(
 const initialState = {
   items: [],
   status: '',
+  isModalOpen: false,
 };
 
 const pizzaSlice = createSlice({
@@ -24,6 +25,9 @@ const pizzaSlice = createSlice({
   reducers: {
     addItems: (state, { payload }) => {
       state.items = payload;
+    },
+    setIsModalOpen: (state, { payload }) => {
+      state.isModalOpen = payload;
     },
   },
   extraReducers: {
@@ -44,6 +48,6 @@ const pizzaSlice = createSlice({
 
 export const selectorPizza = state => state.pizza;
 
-export const { addItem } = pizzaSlice.actions;
+export const { addItem, setIsModalOpen } = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;

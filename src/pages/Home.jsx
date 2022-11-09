@@ -15,7 +15,7 @@ import { sortList } from 'components/Sort';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useRef(useNavigate());
 
   const { categoryIdx, sortType } = useSelector(selectorFilter);
   const { items, status, isModalOpen } = useSelector(selectorPizza);
@@ -66,11 +66,11 @@ const Home = () => {
         categoryIdx,
         sortProperty: sortType.sortProperty,
       });
-      navigate(`?${queryString}`);
+      navigate.current(`?${queryString}`);
     }
 
     isMounted.current = true;
-  }, [categoryIdx, isModalOpen, sortType]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [categoryIdx, isModalOpen, sortType]);
 
   return (
     <>

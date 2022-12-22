@@ -1,7 +1,26 @@
-import { useDispatch } from "react-redux";
-import { addItem, decrementItem, removeItem } from "redux/slices/cartSlice";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { addItem, decrementItem, removeItem } from 'redux/slices/cartSlice';
 
-export const CartItem = ({ id, title, price, imageUrl, type, size, count }) => {
+type CartItemProps = {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  type: number;
+  size: number;
+  count: number;
+};
+
+export const CartItem: React.FC<CartItemProps> = ({
+  id,
+  title,
+  price,
+  imageUrl,
+  type,
+  size,
+  count,
+}) => {
   const dispatch = useDispatch();
 
   const handleItemIncrement = () => {
@@ -13,7 +32,7 @@ export const CartItem = ({ id, title, price, imageUrl, type, size, count }) => {
   };
 
   const handleRemoveItem = () => {
-    if (window.confirm("Are you really want delete pizza?")) {
+    if (window.confirm('Are you really want delete pizza?')) {
       dispatch(removeItem(id));
     }
   };

@@ -1,15 +1,15 @@
-import { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import debounce from 'lodash.debounce';
 
 import styles from './Search.module.scss';
 import { setSearchValue } from 'redux/slices/filterSlice';
 
-export const Search = () => {
+export const Search: React.FC = () => {
   const dispatch = useDispatch();
 
   const [searchLocal, setSearchLocal] = useState('');
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const updateSearchValue = useMemo(
     () =>
@@ -19,7 +19,7 @@ export const Search = () => {
     [dispatch]
   );
 
-  const handleChangeSearchLocal = event => {
+  const handleChangeSearchLocal = (event: any) => {
     setSearchLocal(event.target.value);
     updateSearchValue(event.target.value);
   };
@@ -27,7 +27,7 @@ export const Search = () => {
   const handleClearInput = () => {
     setSearchLocal('');
     dispatch(setSearchValue(''));
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   return (

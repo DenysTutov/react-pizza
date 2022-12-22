@@ -7,7 +7,7 @@ import Cart from 'pages/Cart';
 import NotFound from 'pages/NotFound';
 import './scss/app.scss';
 
-export const App = () => {
+const App = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -21,3 +21,5 @@ export const App = () => {
     </Routes>
   );
 };
+
+export default App;

@@ -47,7 +47,7 @@ const Home = () => {
         ''
       )}&order=${order}`;
       const sort = categoryIdx === 0 ? sortBy : `&${sortBy}`;
-
+      //@ts-ignore
       dispatch(fetchPizzas({ category, sort, search }));
     };
 
@@ -89,7 +89,9 @@ const Home = () => {
             ? [...new Array(8)].map((_, idx) => (
                 <PizzaBlockSkeleton key={idx} />
               ))
-            : items.map(pizza => <PizzaBlock key={pizza.id} {...pizza} />)}
+            : items.map((pizza: any) => (
+                <PizzaBlock key={pizza.id} {...pizza} />
+              ))}
         </div>
       </div>
 

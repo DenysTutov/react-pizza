@@ -1,18 +1,22 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import { Modal } from 'components/Modal/Modal';
 import { setIsModalOpen } from 'redux/slices/pizzaSlice';
 import styles from './PizzaInfo.module.scss';
 
-const PizzaInfo = () => {
+const PizzaInfo: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [pizza, setPizza] = useState(null);
+  const [pizza, setPizza] = useState<{
+    imageUrl: string;
+    title: string;
+    price: number;
+  }>();
 
   useEffect(() => {
     const fetchPizza = async () => {

@@ -1,10 +1,16 @@
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setSortType } from 'redux/slices/filterSlice';
 import { selectorFilter } from 'redux/slices/filterSlice';
 
-export const sortList = [
+type SortItem = {
+  name: string;
+  sortProperty: string;
+};
+
+export const sortList: SortItem[] = [
   { name: 'популярности DESC', sortProperty: 'rating' },
   { name: 'популярности ASC', sortProperty: '-rating' },
   { name: 'цене DESC', sortProperty: 'price' },
@@ -13,21 +19,21 @@ export const sortList = [
   { name: 'алфавиту ASC', sortProperty: '-title' },
 ];
 
-export const Sort = () => {
+export const Sort: React.FC = () => {
   const dispatch = useDispatch();
   const { sortType } = useSelector(selectorFilter);
 
   const [isOpen, setIsOpen] = useState(false);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  const handleChangeActiveSort = typeObj => {
-    dispatch(setSortType(typeObj));
+  const handleChangeActiveSort = (obj: SortItem) => {
+    dispatch(setSortType(obj));
     setIsOpen(false);
   };
 
   useEffect(() => {
     if (isOpen) {
-      const handleSortClose = event => {
+      const handleSortClose = (event: any) => {
         const sort = event.path.includes(sortRef.current);
 
         if (!sort) {

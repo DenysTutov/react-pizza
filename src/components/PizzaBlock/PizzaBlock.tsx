@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -6,10 +6,26 @@ import { addItem } from 'redux/slices/cartSlice';
 
 const typesName = ['тонкое', 'традиционное'];
 
-export const PizzaBlock = ({ id, title, price, imageUrl, types, sizes }) => {
+type PizzaBlockProps = {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  types: number[];
+  sizes: number[];
+};
+
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  id,
+  title,
+  price,
+  imageUrl,
+  types,
+  sizes,
+}) => {
   const dispatch = useDispatch();
-  const pizza = useSelector(state =>
-    state.cart.items.find(obj => obj.id === id)
+  const pizza = useSelector((state: any) =>
+    state.cart.items.find((obj: any) => obj.id === id)
   );
   const addedPizzaCount = pizza ? pizza.count : 0;
 

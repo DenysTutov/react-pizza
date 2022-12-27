@@ -80,10 +80,10 @@ const Home = () => {
           <Sort />
         </div>
 
-        <h1 className="content__title">Все пиццы</h1>
+        <h1 className="content__title">All pizzas</h1>
 
         <div className="content__items">
-          {status === 'error' && <div>Упс, произошла ошибка</div>}
+          {status === 'error' && <div>Oops, an error occurred</div>}
 
           {status === 'pending'
             ? [...new Array(8)].map((_, idx) => (

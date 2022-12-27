@@ -49,7 +49,7 @@ export const Search: React.FC = () => {
         value={searchLocal}
         onChange={handleChangeSearchLocal}
         className={styles.input}
-        placeholder="Введите название пиццы..."
+        placeholder="Enter pizza name..."
       />
 
       {searchLocal && (

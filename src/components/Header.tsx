@@ -17,7 +17,7 @@ export const Header: React.FC = () => {
             <img width="38" src={pizzaLogo} alt="Pizza logo" />
             <div>
               <h1>React Pizza</h1>
-              <p>самая вкусная пицца во вселенной</p>
+              <p>the most delicious pizza in the universe</p>
             </div>
           </div>
         </Link>
@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
 
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>{totalPrice} грн</span>
+            <span>{totalPrice} €</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"

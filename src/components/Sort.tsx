@@ -11,12 +11,12 @@ type SortItem = {
 };
 
 export const sortList: SortItem[] = [
-  { name: 'популярности DESC', sortProperty: 'rating' },
-  { name: 'популярности ASC', sortProperty: '-rating' },
-  { name: 'цене DESC', sortProperty: 'price' },
-  { name: 'цене ASC', sortProperty: '-price' },
-  { name: 'алфавиту DESC', sortProperty: 'title' },
-  { name: 'алфавиту ASC', sortProperty: '-title' },
+  { name: 'popularity DESC', sortProperty: 'rating' },
+  { name: 'popularity ASC', sortProperty: '-rating' },
+  { name: 'price DESC', sortProperty: 'price' },
+  { name: 'price ASC', sortProperty: '-price' },
+  { name: 'alphabet DESC', sortProperty: 'title' },
+  { name: 'alphabet ASC', sortProperty: '-title' },
 ];
 
 export const Sort: React.FC = () => {
@@ -47,6 +47,22 @@ export const Sort: React.FC = () => {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (isOpen) {
+      const handleKeyDown = (event: any) => {
+        if (event.code === 'Escape') {
+          setIsOpen(false);
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    }
+  }, [isOpen]);
+
   return (
     <>
       {/* {isOpen && (
@@ -67,7 +83,7 @@ export const Sort: React.FC = () => {
               fill="#2C2C2C"
             />
           </svg>
-          <b>Сортировка по:</b>
+          <b>Sort by:</b>
           <span onClick={() => setIsOpen(!isOpen)}>{sortType.name}</span>
         </div>
 

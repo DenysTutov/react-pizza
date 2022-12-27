@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryIdx } from 'redux/slices/filterSlice';
 
 const categoriesList = [
-  'Все',
-  'Мясные',
-  'Вегетарианская',
-  'Гриль',
-  'Острые',
-  'Закрытые',
+  'All',
+  'Meat',
+  'Vegetarian',
+  'Grill',
+  'Spicy',
+  'Closed',
 ];
 
 export const Categories: React.FC = () => {

@@ -7,12 +7,10 @@ export const NotFoundBlock: React.FC = () => {
     <div className={styles.root}>
       <h1>
         <span>😕</span>
-        Ничего не найдено
+        Not found
       </h1>
 
-      <p className={styles.discription}>
-        К сожалению данная страница отсутствует
-      </p>
+      <p className={styles.discription}>Sorry, this page is missing.</p>
     </div>
   );
 };

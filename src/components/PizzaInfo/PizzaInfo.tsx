@@ -28,7 +28,7 @@ const PizzaInfo: React.FC = () => {
         setPizza(data);
         dispatch(setIsModalOpen(true));
       } catch (error) {
-        alert('Ошибка при получении пиц');
+        alert('Error while getting pizza');
         navigate('/');
       }
     };

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { addItem } from 'redux/slices/cartSlice';
 
-const typesName = ['тонкое', 'традиционное'];
+const typesName = ['thin', 'traditional'];
 
 type PizzaBlockProps = {
   id: string;
@@ -73,16 +73,19 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
                 onClick={() => setActiveSize(idx)}
                 className={activeSize === idx ? 'active' : ''}
               >
-                {size} см.
+                {size} cm
               </li>
             ))}
           </ul>
         </div>
 
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">от {price} грн</div>
+          <div className="pizza-block__price">from {price} €</div>
 
-          <button className="button button--outline button--add">
+          <button
+            className="button button--outline button--add"
+            onClick={handleAddPizza}
+          >
             <svg
               width="12"
               height="12"
@@ -96,7 +99,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
               />
             </svg>
 
-            <span onClick={handleAddPizza}>Добавить</span>
+            <span>Add</span>
 
             {addedPizzaCount > 0 && <i>{addedPizzaCount}</i>}
           </button>

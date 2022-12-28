@@ -1,0 +1,59 @@
+@import 'scss/_variables';
+@import 'scss/libs/_normalize';
+
+.modal {
+  min-width: 300px;
+}
+
+.title {
+  text-align: center;
+  font-size: 18px;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.button {
+  display: inline-block;
+  background-color: #fff;
+
+  border-radius: 30px;
+  padding: 10px 20px;
+  min-width: 130px;
+  text-align: center;
+
+  cursor: pointer;
+
+  transition: background-color $duration ease-in-out,
+    border-color $duration ease-in-out;
+  border: 1px solid $orange;
+  @include noselect();
+
+  &,
+  span {
+    color: $orange;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all $duration ease-in-out;
+  }
+
+  &:hover {
+    background-color: $orange;
+
+    span {
+      color: #fff;
+    }
+  }
+
+  &:active {
+    background-color: $orange;
+    transform: translateY(1px);
+  }
+
+  &:not(:last-child) {
+    margin-right: 15px;
+  }
+}

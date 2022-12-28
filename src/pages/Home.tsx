@@ -5,6 +5,7 @@ import qs from 'qs';
 
 import { fetchPizzas, selectorPizza } from 'redux/slices/pizzaSlice';
 import { selectorFilter, setFilters } from 'redux/slices/filterSlice';
+
 import {
   Categories,
   Sort,
@@ -17,9 +18,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigateRef = useRef(useNavigate());
 
-  const { categoryIdx, sortType } = useSelector(selectorFilter);
-  const { items, status, isModalOpen } = useSelector(selectorPizza);
-  const { searchValue } = useSelector(selectorFilter);
+  const { categoryIdx, sortType, searchValue } = useSelector(selectorFilter);
+  const { items, status } = useSelector(selectorPizza);
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
@@ -61,7 +61,7 @@ const Home = () => {
   }, [categoryIdx, dispatch, searchValue, sortType]);
 
   useEffect(() => {
-    if (isMounted.current && !isModalOpen) {
+    if (isMounted.current) {
       const queryString = qs.stringify({
         categoryIdx,
         sortProperty: sortType.sortProperty,
@@ -70,7 +70,7 @@ const Home = () => {
     }
 
     isMounted.current = true;
-  }, [categoryIdx, isModalOpen, sortType]);
+  }, [categoryIdx, sortType]);
 
   return (
     <>

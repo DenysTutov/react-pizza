@@ -1,23 +1,22 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import { setIsModalOpen } from 'redux/slices/pizzaSlice';
-import styles from './Modal.module.scss';
+import styles from './LayoutModal.module.scss';
 
 type ModalProps = {
   children: any;
+  navTo: string;
 };
 
-export const Modal: React.FC<ModalProps> = ({ children }) => {
-  const navigate = useNavigate();
+export const LayoutModal: React.FC<ModalProps> = ({ children, navTo }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
       if (event.code === 'Escape') {
-        dispatch(setIsModalOpen(false));
-        navigate('/');
+        navigate(navTo);
       }
     };
 
@@ -26,18 +25,17 @@ export const Modal: React.FC<ModalProps> = ({ children }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, navTo]);
 
   const handleBackdropClick = (event: any) => {
     if (event.target === event.currentTarget) {
-      dispatch(setIsModalOpen(false));
-      navigate('/');
+      navigate(navTo);
     }
   };
 
   return (
     <div className={styles.overlay} onClick={handleBackdropClick}>
-      <div className={styles.modal}>{children}</div>
+      <div className={styles.modalWrapper}>{children}</div>
     </div>
   );
 };

@@ -5,5 +5,9 @@ import cartSlice from './slices/cartSlice';
 import pizzaSlice from './slices/pizzaSlice';
 
 export const store = configureStore({
-  reducer: { filter: filterSlice, cart: cartSlice, pizza: pizzaSlice },
+  reducer: {
+    filter: filterSlice,
+    cart: cartSlice,
+    pizza: pizzaSlice,
+  },
 });

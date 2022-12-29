@@ -9,7 +9,7 @@ const typesName = ['thin', 'traditional'];
 type PizzaBlockProps = {
   id: string;
   title: string;
-  price: number;
+  prices: number[];
   imageUrl: string;
   types: number[];
   sizes: number[];
@@ -18,7 +18,7 @@ type PizzaBlockProps = {
 export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   id,
   title,
-  price,
+  prices,
   imageUrl,
   types,
   sizes,
@@ -27,6 +27,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   const pizza = useSelector((state: any) =>
     state.cart.items.find((obj: any) => obj.id === id)
   );
+
   const addedPizzaCount = pizza ? pizza.count : 0;
 
   const [activeType, setActiveType] = useState(0);
@@ -36,7 +37,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
     const pizza = {
       id,
       title,
-      price,
+      price: prices[activeSize],
       imageUrl,
       type: typesName[activeType],
       size: sizes[activeSize],
@@ -80,7 +81,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
         </div>
 
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">from {price} €</div>
+          <div className="pizza-block__price">{prices[activeSize]} €</div>
 
           <button
             className="button button--outline button--add"

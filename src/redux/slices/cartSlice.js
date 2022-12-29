@@ -13,11 +13,20 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, { payload }) => {
-      const findItem = state.items.find(item => item.id === payload.id);
+      const findItem = state.items.find(
+        item =>
+          item.id === payload.id &&
+          item.size === payload.size &&
+          item.type === payload.type
+      );
+      const findItemById = state.items.find(item => item.id === payload.id);
 
       if (!findItem) {
-        state.items.push({ ...payload, count: 1 });
+        state.items.push({ ...payload, count: 1, countById: 1 });
       } else {
+        if (findItemById) {
+          findItem.countById += 1;
+        }
         findItem.count += 1;
       }
 

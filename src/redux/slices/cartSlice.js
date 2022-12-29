@@ -4,6 +4,7 @@ import { totalPriceCalc, totalCountCalc } from 'utils';
 
 const initialState = {
   items: [],
+  countById: {},
   totalPrice: 0,
   totalCount: 0,
 };
@@ -19,15 +20,19 @@ const cartSlice = createSlice({
           item.size === payload.size &&
           item.type === payload.type
       );
+
       const findItemById = state.items.find(item => item.id === payload.id);
 
       if (!findItem) {
-        state.items.push({ ...payload, count: 1, countById: 1 });
+        state.items.push({ ...payload, count: 1 });
       } else {
-        if (findItemById) {
-          findItem.countById += 1;
-        }
         findItem.count += 1;
+      }
+
+      if (!findItemById) {
+        state.countById[payload.id] = 1;
+      } else {
+        state.countById[payload.id] += 1;
       }
 
       state.totalPrice = totalPriceCalc(state.items);

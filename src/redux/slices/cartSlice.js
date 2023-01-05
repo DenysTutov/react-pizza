@@ -40,10 +40,16 @@ const cartSlice = createSlice({
       state.totalCount = totalCountCalc(state.items);
     },
     decrementItem: (state, { payload }) => {
-      const findItem = state.items.find(item => item.id === payload);
+      const findItem = state.items.find(
+        item =>
+          item.id === payload.id &&
+          item.size === payload.size &&
+          item.type === payload.type
+      );
 
       if (findItem) {
         findItem.count -= 1;
+        state.countById[payload.id] -= 1;
       }
 
       state.totalPrice = totalPriceCalc(state.items);
@@ -59,6 +65,7 @@ const cartSlice = createSlice({
     },
     clearItems: state => {
       state.items = [];
+      state.countById = {};
       state.totalCount = 0;
       state.totalPrice = 0;
     },

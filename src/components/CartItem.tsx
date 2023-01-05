@@ -26,11 +26,11 @@ export const CartItem: React.FC<CartItemProps> = ({
   const dispatch = useDispatch();
 
   const handleItemIncrement = () => {
-    dispatch(addItem({ id }));
+    dispatch(addItem({ id, size, type }));
   };
 
   const handleItemDecrement = () => {
-    dispatch(decrementItem(id));
+    dispatch(decrementItem({ id, size, type }));
   };
 
   return (

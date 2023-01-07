@@ -19,7 +19,7 @@ const App = () => {
 
         <Route path="cart" element={<Cart />}>
           <Route path="clear" element={<ClearCartModal />} />
-          <Route path="clear/item/:id" element={<ClearCartItemModal />} />
+          <Route path="clear/:param" element={<ClearCartItemModal />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>

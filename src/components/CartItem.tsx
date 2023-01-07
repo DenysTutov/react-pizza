@@ -92,10 +92,10 @@ export const CartItem: React.FC<CartItemProps> = ({
           </button>
         </div>
         <div className="cart__item-price">
-          <b>{price * count} €</b>
+          <b>{(price * count).toFixed(2)} €</b>
         </div>
         <div className="cart__item-remove">
-          <Link to={`clear/item/${id}`}>
+          <Link to={`clear/${id}&${size}&${type}`}>
             <div className="button button--outline button--circle">
               <svg
                 width="10"

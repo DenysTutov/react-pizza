@@ -24,11 +24,11 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   sizes,
 }) => {
   const dispatch = useDispatch();
-  const pizza = useSelector((state: any) =>
-    state.cart.items.find((obj: any) => obj.id === id)
-  );
+  const countById = useSelector((state: any) => state.cart.countById);
 
-  const addedPizzaCount = pizza ? pizza.count : 0;
+  const countByIdKeys = Object.keys(countById);
+
+  const addedPizzaCount = countByIdKeys.includes(id) ? countById[id] : 0;
 
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);

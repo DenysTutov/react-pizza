@@ -9,7 +9,8 @@ export const ClearCartItemModal = () => {
   const { param } = useParams();
   const paramArr = param?.split('&');
   const { items } = useSelector(selectorCart);
-  const findPizza = items.find(
+
+  const pizza = items.find(
     item =>
       item.id === paramArr[0] &&
       item.size === Number(paramArr[1]) &&
@@ -19,7 +20,7 @@ export const ClearCartItemModal = () => {
   return (
     <LayoutConfirmModal
       title={'Are you really want delete pizza?'}
-      confirm={removeItem(findPizza)}
+      confirm={removeItem(pizza)}
       navTo={'/cart'}
     />
   );

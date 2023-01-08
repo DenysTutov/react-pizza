@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { totalPriceCalc, totalCountCalc } from 'utils';
+import {
+  totalPriceCalc,
+  totalCountCalc,
+  findCartItem,
+  findCartItemById,
+} from 'utils';
 
 const initialState = {
   items: [],
@@ -14,14 +19,9 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, { payload }) => {
-      const findItem = state.items.find(
-        item =>
-          item.id === payload.id &&
-          item.size === payload.size &&
-          item.type === payload.type
-      );
+      const findItem = findCartItem(state.items, payload);
 
-      const findItemById = state.items.find(item => item.id === payload.id);
+      const findItemById = findCartItemById(state.items, payload);
 
       if (!findItem) {
         state.items.push({ ...payload, count: 1 });
@@ -40,12 +40,7 @@ const cartSlice = createSlice({
       state.totalCount = totalCountCalc(state.items);
     },
     decrementItem: (state, { payload }) => {
-      const findItem = state.items.find(
-        item =>
-          item.id === payload.id &&
-          item.size === payload.size &&
-          item.type === payload.type
-      );
+      const findItem = findCartItem(state.items, payload);
 
       if (findItem) {
         findItem.count -= 1;
@@ -57,6 +52,12 @@ const cartSlice = createSlice({
       state.totalCount = totalCountCalc(state.items);
     },
     removeItem: (state, { payload }) => {
+      const findItem = findCartItem(state.items, payload);
+
+      if (findItem) {
+        state.countById[payload.id] -= findItem.count;
+      }
+
       state.items = state.items.filter(
         item =>
           !(

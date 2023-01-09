@@ -10,6 +10,10 @@ type SortItem = {
   sortProperty: string;
 };
 
+type PopupClick = MouseEvent & {
+  path: Node[];
+};
+
 export const sortList: SortItem[] = [
   { name: 'popularity DESC', sortProperty: 'rating' },
   { name: 'popularity ASC', sortProperty: '-rating' },
@@ -33,10 +37,10 @@ export const Sort: React.FC = () => {
 
   useEffect(() => {
     if (isOpen) {
-      const handleSortClose = (event: any) => {
-        const sort = event.path.includes(sortRef.current);
+      const handleSortClose = (event: MouseEvent) => {
+        const _event = event as PopupClick;
 
-        if (!sort) {
+        if (sortRef.current && !_event.path.includes(sortRef.current)) {
           setIsOpen(false);
         }
       };
@@ -49,7 +53,7 @@ export const Sort: React.FC = () => {
 
   useEffect(() => {
     if (isOpen) {
-      const handleKeyDown = (event: any) => {
+      const handleKeyDown = (event: KeyboardEvent) => {
         if (event.code === 'Escape') {
           setIsOpen(false);
         }

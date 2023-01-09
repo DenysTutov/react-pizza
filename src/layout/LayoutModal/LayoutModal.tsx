@@ -4,17 +4,20 @@ import { useNavigate } from 'react-router-dom';
 
 import styles from './LayoutModal.module.scss';
 
-type ModalProps = {
-  children: any;
+type LayoutModalProps = {
+  children?: React.ReactNode;
   navTo: string;
 };
 
-export const LayoutModal: React.FC<ModalProps> = ({ children, navTo }) => {
+export const LayoutModal: React.FC<LayoutModalProps> = ({
+  children,
+  navTo,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleKeyDown = (event: any) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === 'Escape') {
         navigate(navTo);
       }
@@ -27,7 +30,7 @@ export const LayoutModal: React.FC<ModalProps> = ({ children, navTo }) => {
     };
   }, [dispatch, navigate, navTo]);
 
-  const handleBackdropClick = (event: any) => {
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       navigate(navTo);
     }

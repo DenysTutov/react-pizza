@@ -5,7 +5,6 @@ import qs from 'qs';
 
 import { fetchPizzas, selectorPizza } from 'redux/slices/pizzaSlice';
 import { selectorFilter, setFilters } from 'redux/slices/filterSlice';
-
 import {
   Categories,
   Sort,
@@ -13,6 +12,7 @@ import {
   PizzaBlockSkeleton,
 } from '../components';
 import { sortList } from 'components/Sort';
+import { PizzaBlockProps } from 'components/PizzaBlock/PizzaBlock';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -89,7 +89,7 @@ const Home = () => {
             ? [...new Array(8)].map((_, idx) => (
                 <PizzaBlockSkeleton key={idx} />
               ))
-            : items.map((pizza: any) => (
+            : items.map((pizza: PizzaBlockProps) => (
                 <PizzaBlock key={pizza.id} {...pizza} />
               ))}
         </div>

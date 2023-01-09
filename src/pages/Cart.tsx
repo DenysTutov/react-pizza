@@ -4,6 +4,7 @@ import { Link, Outlet } from 'react-router-dom';
 
 import { selectorCart } from 'redux/slices/cartSlice';
 import { CartItem, CartEmpty } from 'components';
+import { CartItemProps } from 'components/CartItem';
 
 const Cart: React.FC = () => {
   const {
@@ -97,7 +98,7 @@ const Cart: React.FC = () => {
             </div>
           </div>
           <div className="content__items">
-            {cartItems.map((item: any) => (
+            {cartItems.map((item: CartItemProps) => (
               <CartItem key={item.id + item.size + item.type} {...item} />
             ))}
           </div>

@@ -4,8 +4,22 @@ import { useNavigate } from 'react-router-dom';
 
 import { LayoutModal } from 'layout/LayoutModal/LayoutModal';
 import styles from './LayoutConfirmModal.module.scss';
+import { CartItemProps } from 'components/CartItem';
 
-export const LayoutConfirmModal = ({ title, confirm, navTo }) => {
+type LayoutConfirmModalProps = {
+  title: string;
+  confirm: {
+    payload?: CartItemProps;
+    type: string;
+  };
+  navTo: string;
+};
+
+export const LayoutConfirmModal: React.FC<LayoutConfirmModalProps> = ({
+  title,
+  confirm,
+  navTo,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

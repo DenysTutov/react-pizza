@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { addItem, decrementItem } from 'redux/slices/cartSlice';
 
-type CartItemProps = {
+export type CartItemProps = {
   id: string;
   title: string;
   price: number;

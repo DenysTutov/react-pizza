@@ -19,7 +19,9 @@ export const Search: React.FC = () => {
     [dispatch]
   );
 
-  const handleChangeSearchLocal = (event: any) => {
+  const handleChangeSearchLocal = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setSearchLocal(event.target.value);
     updateSearchValue(event.target.value);
   };

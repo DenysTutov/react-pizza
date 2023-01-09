@@ -6,7 +6,7 @@ import { addItem } from 'redux/slices/cartSlice';
 
 const typesName = ['thin', 'traditional'];
 
-type PizzaBlockProps = {
+export type PizzaBlockProps = {
   id: string;
   title: string;
   prices: number[];

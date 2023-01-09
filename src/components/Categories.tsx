@@ -19,7 +19,7 @@ export const Categories: React.FC = () => {
   return (
     <div className="categories">
       <ul>
-        {categoriesList.map((category, idx) => (
+        {categoriesList.map((category: string, idx) => (
           <li
             key={category}
             onClick={() => dispatch(setCategoryIdx(idx))}

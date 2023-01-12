@@ -1,8 +1,13 @@
 import React from 'react';
-import { NotFoundBlock } from 'components';
+import { NotFoundError } from 'components';
 
 const NotFound: React.FC = () => {
-  return <NotFoundBlock />;
+  return (
+    <NotFoundError
+      title={'Not found'}
+      discription={'Sorry, this page is missing.'}
+    />
+  );
 };
 
 export default NotFound;

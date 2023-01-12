@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { setCategoryIdx } from 'redux/slices/filterSlice';
 
-const categoriesList = [
+export const categoriesList = [
   'All',
   'Meat',
   'Vegetarian',

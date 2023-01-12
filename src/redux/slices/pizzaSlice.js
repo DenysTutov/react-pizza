@@ -7,6 +7,7 @@ export const fetchPizzas = createAsyncThunk(
   'pizza/fetchPizzas',
   async params => {
     const { category, sort, search } = params;
+    console.log(`/items?${category}${sort}${search}`);
 
     const { data } = await axios.get(`/items?${category}${sort}${search}`);
     return data;

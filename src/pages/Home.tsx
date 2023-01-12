@@ -9,9 +9,11 @@ import {
   Categories,
   Sort,
   PizzaBlock,
+  NotFoundError,
   PizzaBlockSkeleton,
 } from '../components';
 import { sortList } from 'components/Sort';
+import { categoriesList } from 'components/Categories';
 import { PizzaBlockProps } from 'components/PizzaBlock/PizzaBlock';
 
 const Home = () => {
@@ -80,18 +82,27 @@ const Home = () => {
           <Sort />
         </div>
 
-        <h1 className="content__title">All pizzas</h1>
+        <h1 className="content__title">{categoriesList[categoryIdx]} pizzas</h1>
+
+        {status === 'error' && (
+          <NotFoundError title={'Oops, an error occurred'} />
+        )}
+
+        {items.length === 0 && status !== 'error' && status !== 'pending' && (
+          <NotFoundError
+            title={'Oops...'}
+            discription={`Not found pizza with name ${searchValue}`}
+          />
+        )}
 
         <div className="content__items">
-          {status === 'error' && <div>Oops, an error occurred</div>}
+          {status === 'pending' &&
+            [...new Array(4)].map((_, idx) => <PizzaBlockSkeleton key={idx} />)}
 
-          {status === 'pending'
-            ? [...new Array(8)].map((_, idx) => (
-                <PizzaBlockSkeleton key={idx} />
-              ))
-            : items.map((pizza: PizzaBlockProps) => (
-                <PizzaBlock key={pizza.id} {...pizza} />
-              ))}
+          {status === 'success' &&
+            items.map((pizza: PizzaBlockProps) => (
+              <PizzaBlock key={pizza.id} {...pizza} />
+            ))}
         </div>
       </div>
 

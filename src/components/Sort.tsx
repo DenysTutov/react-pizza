@@ -17,8 +17,8 @@ type PopupClick = MouseEvent & {
 export const sortList: SortItem[] = [
   { name: 'popularity DESC', sortProperty: 'rating' },
   { name: 'popularity ASC', sortProperty: '-rating' },
-  { name: 'price DESC', sortProperty: 'price' },
-  { name: 'price ASC', sortProperty: '-price' },
+  { name: 'price DESC', sortProperty: 'prices' },
+  { name: 'price ASC', sortProperty: '-prices' },
   { name: 'alphabet DESC', sortProperty: 'title' },
   { name: 'alphabet ASC', sortProperty: '-title' },
 ];
@@ -30,8 +30,8 @@ export const Sort: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
 
-  const handleChangeActiveSort = (obj: SortItem) => {
-    dispatch(setSortType(obj));
+  const handleChangeActiveSort = (sortType: SortItem) => {
+    dispatch(setSortType(sortType));
     setIsOpen(false);
   };
 
